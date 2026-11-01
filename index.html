@@ -2,44 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ATLAS - Home Essentials & Asset Hub</title>
     
     <!-- PWA Web App Meta Tags -->
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#6b21a8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="ATLAS">
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .pulse-orb { box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
+        body { 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #0f172a; 
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; 
+        }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.75); 
+            backdrop-filter: blur(16px); 
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .ios-bounce {
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .ios-bounce:active {
+            transform: scale(0.94);
+        }
+        .cow-brown-text { color: #78350f; }
+        .cow-brown-bg { background-color: #78350f; }
+        .cow-brown-border { border-color: #78350f; }
     </style>
 </head>
-<body class="min-h-screen pb-12">
+<body class="min-h-screen pb-12 select-none">
 
-    <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+    <!-- SVG Icon Templates (Reusable SVG Definitions) -->
+    <svg style="display: none;">
+        <!-- Unified HD Aavin Milk Packet Pouch SVG -->
+        <g id="icon-aavin-pouch">
+            <svg viewBox="0 0 64 64" class="w-full h-full drop-shadow-sm">
+                <rect x="10" y="8" width="44" height="48" rx="6" fill="currentColor" opacity="0.9" />
+                <path d="M10 8 C 22 14, 42 2, 54 8 L 54 22 C 42 16, 22 28, 10 22 Z" fill="#ffffff" opacity="0.4" />
+                <path d="M10 40 C 24 34, 38 46, 54 40 L 54 56 L 10 56 Z" fill="#ffffff" opacity="0.85" />
+                <rect x="22" y="14" width="20" height="8" rx="2" fill="#ffffff" />
+                <text x="32" y="20" font-size="5.5" font-weight="800" text-anchor="middle" fill="#0284c7">ஆவின்</text>
+            </svg>
+        </g>
+        
+        <!-- Unified HD Cow Head Silhouette SVG -->
+        <g id="icon-cow-head">
+            <svg viewBox="0 0 64 64" class="w-full h-full drop-shadow-sm">
+                <path d="M 12 18 C 6 12, 10 2, 22 10 C 26 12, 38 12, 42 10 C 54 2, 58 12, 52 18 C 50 26, 48 30, 48 40 C 48 52, 40 58, 32 58 C 24 58, 16 52, 16 40 C 16 30, 14 26, 12 18 Z" fill="currentColor" />
+                <!-- Horns -->
+                <path d="M 18 12 C 12 4, 2 8, 8 18 C 12 14, 16 13, 18 12 Z" fill="#54260c" />
+                <path d="M 46 12 C 52 4, 62 8, 56 18 C 52 14, 48 13, 46 12 Z" fill="#54260c" />
+                <!-- Muzzle -->
+                <ellipse cx="32" cy="46" rx="11" ry="8" fill="#fde68a" />
+                <circle cx="27" cy="46" r="2" fill="#54260c" />
+                <circle cx="37" cy="46" r="2" fill="#54260c" />
+                <!-- Eyes -->
+                <circle cx="24" cy="28" r="3" fill="#ffffff" />
+                <circle cx="24" cy="28" r="1.5" fill="#000000" />
+                <circle cx="40" cy="28" r="3" fill="#ffffff" />
+                <circle cx="40" cy="28" r="1.5" fill="#000000" />
+            </svg>
+        </g>
+    </svg>
+
+    <!-- 1. Top iOS Light-Mode Header -->
+    <header class="sticky top-0 z-30 glass-header px-4 py-3.5">
         <div class="max-w-xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center pulse-orb">
-                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                <div class="w-9 h-9 rounded-2xl bg-purple-600 flex items-center justify-center text-white shadow-md shadow-purple-500/30">
+                    <i data-lucide="layers" class="w-5 h-5"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg tracking-wider text-slate-100 flex items-center gap-1.5">
-                        A.T.L.A.S.
-                    </h1>
-                    <p class="text-[10px] text-cyan-400 font-mono tracking-tight">SYSTEMS OPERATIONAL</p>
+                    <h1 class="font-extrabold text-lg tracking-wider text-slate-900 leading-none">A.T.L.A.S.</h1>
+                    <p class="text-[10px] text-purple-600 font-bold tracking-tight mt-0.5">HOUSEHOLD ESSENTIALS HUB</p>
                 </div>
             </div>
             
-            <button onclick="openSettings()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+            <button onclick="openSettings()" class="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors ios-bounce" title="Settings">
                 <i data-lucide="settings" class="w-5 h-5"></i>
             </button>
         </div>
@@ -47,60 +107,150 @@
 
     <main class="max-w-xl mx-auto px-4 mt-4 space-y-5">
 
-        <!-- Month Navigation Bar -->
-        <section class="glass-card rounded-2xl p-4 flex items-center justify-between">
-            <button onclick="changeMonth(-1)" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">
-                <i data-lucide="chevron-left" class="w-5 h-5"></i>
-            </button>
-            <div class="text-center">
-                <h2 id="currentMonthLabel" class="text-lg font-bold text-slate-100">October 2026</h2>
-                <p class="text-xs text-slate-400">Monthly Essential Ledger</p>
+        <!-- 2. TODAY'S LOG BANNER (Royal Purple Theme) -->
+        <section class="bg-gradient-to-br from-purple-800 via-indigo-900 to-slate-900 rounded-3xl p-5 text-white shadow-xl shadow-purple-900/20 relative overflow-hidden border border-purple-700/40">
+            <!-- Background Watermark Vector Silhouettes -->
+            <div class="absolute -right-4 -bottom-6 opacity-15 pointer-events-none w-36 h-36 text-purple-200">
+                <svg class="w-full h-full"><use href="#icon-cow-head"/></svg>
             </div>
-            <button onclick="changeMonth(1)" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">
-                <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
-        </section>
+            <div class="absolute right-28 -top-6 opacity-10 pointer-events-none w-32 h-32 text-purple-200">
+                <svg class="w-full h-full"><use href="#icon-aavin-pouch"/></svg>
+            </div>
 
-        <!-- Monthly Bill Summary Section -->
-        <section class="grid grid-cols-2 gap-3">
-            <!-- Aavin Summary Card -->
-            <div class="glass-card rounded-2xl p-4 border-l-4 border-l-emerald-400">
-                <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
-                    <span>Aavin Packets</span>
-                    <i data-lucide="package" class="w-4 h-4 text-emerald-400"></i>
+            <div class="relative z-10 space-y-4">
+                <!-- Date & Status Bar -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <h2 id="todayDateTitle" class="text-xs font-bold uppercase tracking-wider text-purple-200">Today - 2 Nov 2026</h2>
+                    </div>
+                    <span id="todayStatusPill" class="px-3 py-1 rounded-full text-[11px] font-bold bg-purple-700/60 border border-purple-400/30 text-purple-100 backdrop-blur-md">
+                        ⚡ Auto Logged
+                    </span>
                 </div>
-                <div id="aavinMonthlyBill" class="text-xl font-extrabold text-emerald-400">₹0</div>
-                <div id="aavinMonthlyCount" class="text-[11px] text-slate-400 mt-1">0 packets</div>
-            </div>
 
-            <!-- Cow Milk Summary Card -->
-            <div class="glass-card rounded-2xl p-4 border-l-4 border-l-amber-400">
-                <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
-                    <span>Fresh Cow Milk</span>
-                    <i data-lucide="milk" class="w-4 h-4 text-amber-400"></i>
+                <!-- Daily Summary Row -->
+                <div class="grid grid-cols-2 gap-3 pt-1">
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10 flex items-center space-x-3">
+                        <div class="w-8 h-8 text-emerald-400 shrink-0">
+                            <svg class="w-full h-full"><use href="#icon-aavin-pouch"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-purple-200 font-medium">Aavin Packets</p>
+                            <div class="flex items-baseline space-x-1">
+                                <span id="todayAavinCount" class="text-lg font-black text-white">2 Pkts</span>
+                                <span id="todayAavinCost" class="text-xs font-bold text-emerald-300">(₹48)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/10 flex items-center space-x-3">
+                        <div class="w-8 h-8 text-amber-300 shrink-0">
+                            <svg class="w-full h-full"><use href="#icon-cow-head"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] text-purple-200 font-medium">Fresh Cow Milk</p>
+                            <div class="flex items-baseline space-x-1">
+                                <span id="todayCowCount" class="text-lg font-black text-white">1.0 L</span>
+                                <span id="todayCowCost" class="text-xs font-bold text-amber-300">(₹60)</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="cowMilkMonthlyBill" class="text-xl font-extrabold text-amber-400">₹0</div>
-                <div id="cowMilkMonthlyCount" class="text-[11px] text-slate-400 mt-1">0 Litres</div>
+
+                <!-- QUICK TAP ACTION BUTTONS -->
+                <div class="space-y-2 pt-2 border-t border-purple-700/50">
+                    <!-- Aavin Quick Tap Row -->
+                    <div>
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-purple-300 mb-1.5 flex items-center gap-1">
+                            <span class="w-3 h-3 inline-block text-emerald-400"><svg class="w-full h-full"><use href="#icon-aavin-pouch"/></svg></span> Aavin Packet Quick Tap
+                        </p>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button onclick="quickSetAavin(1)" class="py-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/15 text-xs font-bold text-white ios-bounce text-center">1 Pkt</button>
+                            <button onclick="quickSetAavin(2)" class="py-2 rounded-xl bg-emerald-500/80 hover:bg-emerald-500 border border-emerald-400/50 text-xs font-bold text-white ios-bounce text-center">2 Pkts</button>
+                            <button onclick="quickAddAavin(1)" class="py-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/15 text-xs font-bold text-white ios-bounce text-center">+1 Extra</button>
+                            <button onclick="quickSetAavin(0)" class="py-2 rounded-xl bg-rose-500/40 hover:bg-rose-500/60 border border-rose-400/30 text-xs font-bold text-rose-100 ios-bounce text-center">No Aavin</button>
+                        </div>
+                    </div>
+
+                    <!-- Cow Milk Quick Tap Row -->
+                    <div class="pt-1">
+                        <p class="text-[10px] font-bold uppercase tracking-wider text-purple-300 mb-1.5 flex items-center gap-1">
+                            <span class="w-3 h-3 inline-block text-amber-400"><svg class="w-full h-full"><use href="#icon-cow-head"/></svg></span> Cow Milk Quick Tap
+                        </p>
+                        <div class="grid grid-cols-5 gap-1">
+                            <button onclick="quickSetCow(0.5)" class="py-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/15 text-[11px] font-bold text-white ios-bounce text-center">0.5 L</button>
+                            <button onclick="quickSetCow(1.0)" class="py-2 rounded-xl bg-amber-600/80 hover:bg-amber-600 border border-amber-400/50 text-[11px] font-bold text-white ios-bounce text-center">1.0 L</button>
+                            <button onclick="quickSetCow(2.0)" class="py-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/15 text-[11px] font-bold text-white ios-bounce text-center">2.0 L</button>
+                            <button onclick="quickAddCow(1.0)" class="py-2 rounded-xl bg-white/15 hover:bg-white/25 border border-white/15 text-[11px] font-bold text-white ios-bounce text-center">+1.0 L</button>
+                            <button onclick="quickSetCow(0)" class="py-2 rounded-xl bg-rose-500/40 hover:bg-rose-500/60 border border-rose-400/30 text-[11px] font-bold text-rose-100 ios-bounce text-center">No Cow</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Total Monthly Expense Card -->
-        <section class="glass-card rounded-2xl p-4 flex items-center justify-between bg-slate-800/80">
-            <div>
-                <p class="text-xs font-medium text-slate-400">Grand Total Monthly Bill</p>
-                <div id="grandTotalBill" class="text-2xl font-black text-cyan-400 mt-0.5">₹0</div>
+        <!-- 3. MONTHLY LEDGER & SUMMARY -->
+        <section class="glass-card rounded-3xl p-4 space-y-4">
+            <!-- Month Navigation Bar -->
+            <div class="flex items-center justify-between pb-2 border-b border-slate-200/60">
+                <button onclick="changeMonth(-1)" class="p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 ios-bounce">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <div class="text-center">
+                    <h2 id="currentMonthLabel" class="text-base font-extrabold text-slate-900">November 2026</h2>
+                    <p class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Monthly Essential Ledger</p>
+                </div>
+                <button onclick="changeMonth(1)" class="p-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 ios-bounce">
+                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
             </div>
-            <div class="text-right text-xs text-slate-400 space-y-0.5">
-                <div>Extras / Curd: <span id="extrasTotal" class="font-semibold text-slate-200">₹0</span></div>
-                <div class="text-[10px] text-slate-500">Auto-logged daily logs</div>
+
+            <!-- Summary Cards Grid -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Aavin Summary Card -->
+                <div class="glass-card rounded-2xl p-3.5 border-l-4 border-l-emerald-500 bg-emerald-50/30">
+                    <div class="flex items-center justify-between text-slate-500 text-xs mb-1">
+                        <span class="font-bold text-emerald-800">Aavin Packets</span>
+                        <div class="w-5 h-5 text-emerald-600"><svg class="w-full h-full"><use href="#icon-aavin-pouch"/></svg></div>
+                    </div>
+                    <div id="aavinMonthlyBill" class="text-xl font-extrabold text-emerald-700">₹0</div>
+                    <div id="aavinMonthlyCount" class="text-[11px] text-slate-600 font-medium mt-0.5">0 packets</div>
+                </div>
+
+                <!-- Cow Milk Summary Card -->
+                <div class="glass-card rounded-2xl p-3.5 border-l-4 border-l-[#78350f] bg-amber-50/40">
+                    <div class="flex items-center justify-between text-slate-500 text-xs mb-1">
+                        <span class="font-bold cow-brown-text">Fresh Cow Milk</span>
+                        <div class="w-5 h-5 cow-brown-text"><svg class="w-full h-full"><use href="#icon-cow-head"/></svg></div>
+                    </div>
+                    <div id="cowMilkMonthlyBill" class="text-xl font-extrabold cow-brown-text">₹0</div>
+                    <div id="cowMilkMonthlyCount" class="text-[11px] text-slate-600 font-medium mt-0.5">0 Litres</div>
+                </div>
+            </div>
+
+            <!-- Grand Total Monthly Expense Card -->
+            <div class="glass-card rounded-2xl p-4 bg-gradient-to-r from-slate-900 to-slate-800 text-white flex items-center justify-between shadow-lg">
+                <div>
+                    <p class="text-xs font-semibold text-cyan-300 uppercase tracking-wider">Grand Total Monthly Bill</p>
+                    <div id="grandTotalBill" class="text-2xl font-black text-white mt-0.5">₹0</div>
+                </div>
+                <div class="text-right text-xs text-slate-300 space-y-0.5">
+                    <div>Extras / Curd: <span id="extrasTotal" class="font-bold text-cyan-300">₹0</span></div>
+                    <div class="text-[10px] text-slate-400">Includes all services log</div>
+                </div>
             </div>
         </section>
 
-        <!-- Calendar Log View -->
-        <section class="glass-card rounded-2xl p-4">
-            <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                <i data-lucide="calendar" class="w-4 h-4 text-cyan-400"></i> Daily Log Calendar
-            </h3>
+        <!-- 4. CALENDAR GRID -->
+        <section class="glass-card rounded-3xl p-4 space-y-3">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-4 h-4 text-purple-600"></i> Daily Ledger Calendar
+                </h3>
+                <span class="text-[10px] text-slate-500">Tap date to edit</span>
+            </div>
+            
             <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center text-xs">
                 <!-- Days rendered dynamically -->
             </div>
@@ -108,139 +258,146 @@
 
     </main>
 
-    <!-- Day Edit Modal -->
-    <div id="dayModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md rounded-2xl p-6 bg-slate-900 border border-slate-700 space-y-5">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 id="modalDateTitle" class="font-bold text-slate-100">Edit Entry</h3>
-                <button onclick="closeDayModal()" class="text-slate-400 hover:text-slate-200">
+    <!-- 6. DAY EDIT MODAL -->
+    <div id="dayModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 bg-white border border-slate-200 space-y-5 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 id="modalDateTitle" class="font-bold text-slate-900 text-base">Edit Log</h3>
+                <button onclick="closeDayModal()" class="p-1 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <!-- Service 1: Aavin Packets -->
             <div class="space-y-3">
-                <h4 class="text-xs font-semibold text-emerald-400 tracking-wide uppercase">1. Aavin Packet Milk (500ml)</h4>
+                <h4 class="text-xs font-bold text-emerald-700 tracking-wide uppercase flex items-center gap-1.5">
+                    <span class="w-4 h-4 text-emerald-600"><svg class="w-full h-full"><use href="#icon-aavin-pouch"/></svg></span>
+                    1. Aavin Packet Milk (500ml)
+                </h4>
                 <div class="grid grid-cols-3 gap-2">
-                    <div class="bg-slate-800 p-2.5 rounded-xl text-center">
-                        <span class="text-xs text-emerald-300 font-medium block">Green (₹<span id="priceGreenLabel">24</span>)</span>
+                    <div class="bg-emerald-50/50 p-3 rounded-2xl border border-emerald-100 text-center">
+                        <span class="text-xs text-emerald-800 font-bold block">Green (₹<span id="priceGreenLabel">24</span>)</span>
                         <div class="flex items-center justify-center gap-2 mt-2">
-                            <button onclick="adjustQty('green', -1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">-</button>
-                            <span id="qtyGreen" class="font-bold text-slate-100">0</span>
-                            <button onclick="adjustQty('green', 1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">+</button>
+                            <button onclick="adjustQty('green', -1)" class="w-7 h-7 rounded-xl bg-white border border-emerald-200 text-emerald-800 font-bold ios-bounce">-</button>
+                            <span id="qtyGreen" class="font-extrabold text-slate-900 text-sm">0</span>
+                            <button onclick="adjustQty('green', 1)" class="w-7 h-7 rounded-xl bg-emerald-600 text-white font-bold ios-bounce">+</button>
                         </div>
                     </div>
-                    <div class="bg-slate-800 p-2.5 rounded-xl text-center">
-                        <span class="text-xs text-amber-300 font-medium block">Orange (₹<span id="priceOrangeLabel">30</span>)</span>
+                    <div class="bg-orange-50/50 p-3 rounded-2xl border border-orange-100 text-center">
+                        <span class="text-xs text-orange-800 font-bold block">Orange (₹<span id="priceOrangeLabel">30</span>)</span>
                         <div class="flex items-center justify-center gap-2 mt-2">
-                            <button onclick="adjustQty('orange', -1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">-</button>
-                            <span id="qtyOrange" class="font-bold text-slate-100">0</span>
-                            <button onclick="adjustQty('orange', 1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">+</button>
+                            <button onclick="adjustQty('orange', -1)" class="w-7 h-7 rounded-xl bg-white border border-orange-200 text-orange-800 font-bold ios-bounce">-</button>
+                            <span id="qtyOrange" class="font-extrabold text-slate-900 text-sm">0</span>
+                            <button onclick="adjustQty('orange', 1)" class="w-7 h-7 rounded-xl bg-orange-600 text-white font-bold ios-bounce">+</button>
                         </div>
                     </div>
-                    <div class="bg-slate-800 p-2.5 rounded-xl text-center">
-                        <span class="text-xs text-blue-300 font-medium block">Blue (₹<span id="priceBlueLabel">20</span>)</span>
+                    <div class="bg-blue-50/50 p-3 rounded-2xl border border-blue-100 text-center">
+                        <span class="text-xs text-blue-800 font-bold block">Blue (₹<span id="priceBlueLabel">20</span>)</span>
                         <div class="flex items-center justify-center gap-2 mt-2">
-                            <button onclick="adjustQty('blue', -1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">-</button>
-                            <span id="qtyBlue" class="font-bold text-slate-100">0</span>
-                            <button onclick="adjustQty('blue', 1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">+</button>
+                            <button onclick="adjustQty('blue', -1)" class="w-7 h-7 rounded-xl bg-white border border-blue-200 text-blue-800 font-bold ios-bounce">-</button>
+                            <span id="qtyBlue" class="font-extrabold text-slate-900 text-sm">0</span>
+                            <button onclick="adjustQty('blue', 1)" class="w-7 h-7 rounded-xl bg-blue-600 text-white font-bold ios-bounce">+</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Service 2: Cow Milk -->
-            <div class="space-y-2 border-t border-slate-800 pt-3">
-                <h4 class="text-xs font-semibold text-amber-400 tracking-wide uppercase">2. Fresh Cow Milk (Litre)</h4>
-                <div class="flex items-center justify-between bg-slate-800 p-3 rounded-xl">
-                    <span class="text-xs text-slate-300">Volume (₹<span id="priceCowLabel">60</span> / L)</span>
+            <div class="space-y-2 border-t border-slate-100 pt-3">
+                <h4 class="text-xs font-bold cow-brown-text tracking-wide uppercase flex items-center gap-1.5">
+                    <span class="w-4 h-4 cow-brown-text"><svg class="w-full h-full"><use href="#icon-cow-head"/></svg></span>
+                    2. Fresh Cow Milk (Litre)
+                </h4>
+                <div class="flex items-center justify-between bg-amber-50/40 p-3.5 rounded-2xl border border-amber-200/60">
+                    <span class="text-xs font-bold cow-brown-text">Volume (₹<span id="priceCowLabel">60</span> / L)</span>
                     <div class="flex items-center gap-3">
-                        <button onclick="adjustCowQty(-0.5)" class="w-7 h-7 rounded bg-slate-700 text-slate-200 font-bold">-</button>
-                        <span id="qtyCow" class="font-bold text-slate-100 text-sm">1.0 L</span>
-                        <button onclick="adjustCowQty(0.5)" class="w-7 h-7 rounded bg-slate-700 text-slate-200 font-bold">+</button>
+                        <button onclick="adjustCowQty(-0.5)" class="w-8 h-8 rounded-xl bg-white border border-amber-300 cow-brown-text font-bold ios-bounce">-</button>
+                        <span id="qtyCow" class="font-extrabold text-slate-900 text-sm">1.0 L</span>
+                        <button onclick="adjustCowQty(0.5)" class="w-8 h-8 rounded-xl cow-brown-bg text-white font-bold ios-bounce">+</button>
                     </div>
                 </div>
             </div>
 
             <!-- Extra Household Items -->
-            <div class="space-y-2 border-t border-slate-800 pt-3">
-                <h4 class="text-xs font-semibold text-cyan-400 tracking-wide uppercase">3. Extra Household Items (Ad-hoc)</h4>
+            <div class="space-y-2 border-t border-slate-100 pt-3">
+                <h4 class="text-xs font-bold text-purple-700 tracking-wide uppercase">3. Extra Household Items (Ad-hoc)</h4>
                 <div class="flex gap-2">
-                    <input id="extraItemName" type="text" placeholder="e.g. Curd, Water Can" class="flex-1 bg-slate-800 text-xs text-slate-100 px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-cyan-400">
-                    <input id="extraItemPrice" type="number" placeholder="₹ Amount" class="w-24 bg-slate-800 text-xs text-slate-100 px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-cyan-400">
-                    <button onclick="addExtraItem()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-3 py-2 rounded-xl text-xs">Add</button>
+                    <input id="extraItemName" type="text" placeholder="e.g. Curd, Water Can" class="flex-1 bg-slate-50 text-xs text-slate-800 px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-purple-500">
+                    <input id="extraItemPrice" type="number" placeholder="₹ Amount" class="w-24 bg-slate-50 text-xs text-slate-800 px-3 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-purple-500">
+                    <button onclick="addExtraItem()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-3 py-2.5 rounded-xl text-xs ios-bounce">Add</button>
                 </div>
                 <div id="extrasList" class="space-y-1.5 pt-1">
                     <!-- Dynamic extras list -->
                 </div>
             </div>
 
-            <button onclick="saveDayLog()" class="w-full py-3 bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold rounded-xl text-sm transition-colors">
-                Save & Update ATLAS Log
+            <button onclick="saveDayLog()" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl text-xs tracking-wide shadow-lg shadow-purple-600/30 transition-colors ios-bounce">
+                Save & Update Entry
             </button>
         </div>
     </div>
 
-    <!-- Settings Modal -->
-    <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="glass-card w-full max-w-md rounded-2xl p-6 bg-slate-900 border border-slate-700 space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="font-bold text-slate-100">ATLAS Configuration</h3>
-                <button onclick="closeSettings()" class="text-slate-400 hover:text-slate-200">
+    <!-- 6. SETTINGS MODAL -->
+    <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-6 bg-white border border-slate-200 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-900 text-base">ATLAS Settings</h3>
+                <button onclick="closeSettings()" class="p-1 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <div class="space-y-3">
-                <h4 class="text-xs font-semibold text-slate-400 uppercase">Packet Milk Pricing (per half-litre)</h4>
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Aavin Packet Milk Prices (per 500ml)</h4>
                 <div class="grid grid-cols-3 gap-2">
                     <div>
-                        <label class="text-[11px] text-emerald-400">Green (₹)</label>
-                        <input id="settingGreenPrice" type="number" value="24" class="w-full bg-slate-800 text-slate-100 p-2 rounded-lg text-xs border border-slate-700">
+                        <label class="text-[11px] text-emerald-700 font-bold">Green (₹)</label>
+                        <input id="settingGreenPrice" type="number" value="24" class="w-full bg-slate-50 text-slate-900 p-2.5 rounded-xl text-xs font-bold border border-slate-200 mt-1">
                     </div>
                     <div>
-                        <label class="text-[11px] text-amber-400">Orange (₹)</label>
-                        <input id="settingOrangePrice" type="number" value="30" class="w-full bg-slate-800 text-slate-100 p-2 rounded-lg text-xs border border-slate-700">
+                        <label class="text-[11px] text-orange-700 font-bold">Orange (₹)</label>
+                        <input id="settingOrangePrice" type="number" value="30" class="w-full bg-slate-50 text-slate-900 p-2.5 rounded-xl text-xs font-bold border border-slate-200 mt-1">
                     </div>
                     <div>
-                        <label class="text-[11px] text-blue-400">Blue (₹)</label>
-                        <input id="settingBluePrice" type="number" value="20" class="w-full bg-slate-800 text-slate-100 p-2 rounded-lg text-xs border border-slate-700">
+                        <label class="text-[11px] text-blue-700 font-bold">Blue (₹)</label>
+                        <input id="settingBluePrice" type="number" value="20" class="w-full bg-slate-50 text-slate-900 p-2.5 rounded-xl text-xs font-bold border border-slate-200 mt-1">
                     </div>
                 </div>
 
                 <div class="pt-2">
-                    <label class="text-xs font-semibold text-slate-400 uppercase">Fresh Cow Milk Price (per Litre)</label>
-                    <input id="settingCowPrice" type="number" value="60" class="w-full bg-slate-800 text-slate-100 p-2 rounded-lg text-xs border border-slate-700 mt-1">
+                    <label class="text-xs font-bold cow-brown-text uppercase tracking-wider">Fresh Cow Milk Price (per Litre)</label>
+                    <input id="settingCowPrice" type="number" value="60" class="w-full bg-slate-50 text-slate-900 p-2.5 rounded-xl text-xs font-bold border border-slate-200 mt-1">
                 </div>
             </div>
 
-            <button onclick="saveSettings()" class="w-full py-2.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold rounded-xl text-xs transition-colors">
+            <button onclick="saveSettings()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl text-xs shadow-md transition-colors ios-bounce">
                 Save Price Settings
             </button>
         </div>
     </div>
 
-    <!-- Application Logic Script -->
+    <!-- 7. APPLICATION LOGIC SCRIPT -->
     <script>
-        // Core App State
+        // Core Date & App State
         let currentDate = new Date();
         let currentSelectedDateKey = null;
 
-        // Default Config Settings
+        // Default Config Prices
         let settings = {
             prices: { green: 24, orange: 30, blue: 20, cow: 60 }
         };
 
-        // Local Storage / State Database
+        // Local Storage State Persistence
         let logs = JSON.parse(localStorage.getItem('atlas_milk_logs')) || {};
         let savedSettings = JSON.parse(localStorage.getItem('atlas_settings'));
         if (savedSettings) settings = savedSettings;
 
-        // Initialize App
+        // Initialization
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
             updateSettingsLabels();
             renderCalendar();
+            renderTodayBanner();
         });
 
         function updateSettingsLabels() {
@@ -250,9 +407,12 @@
             document.getElementById('priceCowLabel').innerText = settings.prices.cow;
         }
 
-        function changeMonth(offset) {
-            currentDate.setMonth(currentDate.getMonth() + offset);
-            renderCalendar();
+        function getTodayKey() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = String(now.getMonth() + 1).padStart(2, '0');
+            const d = String(now.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
         }
 
         function getLogForDate(dateKey) {
@@ -263,10 +423,93 @@
                     orange: 0,
                     blue: 0,
                     cow: 1.0,
-                    extras: []
+                    extras: [],
+                    isManual: false
                 };
             }
             return logs[dateKey];
+        }
+
+        // 2. TODAY'S BANNER LOGIC
+        function renderTodayBanner() {
+            const todayKey = getTodayKey();
+            const log = getLogForDate(todayKey);
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            document.getElementById('todayDateTitle').innerText = `Today - ${dateStr}`;
+
+            const aavinCount = log.green + log.orange + log.blue;
+            const aavinCost = (log.green * settings.prices.green) + (log.orange * settings.prices.orange) + (log.blue * settings.prices.blue);
+            const cowCost = log.cow * settings.prices.cow;
+
+            document.getElementById('todayAavinCount').innerText = `${aavinCount} Pkt${aavinCount === 1 ? '' : 's'}`;
+            document.getElementById('todayAavinCost').innerText = `(₹${aavinCost})`;
+
+            document.getElementById('todayCowCount').innerText = `${log.cow.toFixed(1)} L`;
+            document.getElementById('todayCowCost').innerText = `(₹${cowCost})`;
+
+            const statusPill = document.getElementById('todayStatusPill');
+            if (log.isManual) {
+                statusPill.innerText = '✏️ Manually Logged';
+                statusPill.className = 'px-3 py-1 rounded-full text-[11px] font-bold bg-amber-500/30 border border-amber-300/40 text-amber-200 backdrop-blur-md';
+            } else {
+                statusPill.innerText = '⚡ Auto Logged';
+                statusPill.className = 'px-3 py-1 rounded-full text-[11px] font-bold bg-purple-700/60 border border-purple-400/30 text-purple-100 backdrop-blur-md';
+            }
+        }
+
+        // QUICK TAP ACTION HANDLERS
+        function quickSetAavin(count) {
+            const todayKey = getTodayKey();
+            const log = getLogForDate(todayKey);
+            log.green = count;
+            log.orange = 0;
+            log.blue = 0;
+            log.isManual = true;
+            logs[todayKey] = log;
+            saveLogs();
+            renderTodayBanner();
+            renderCalendar();
+        }
+
+        function quickAddAavin(delta) {
+            const todayKey = getTodayKey();
+            const log = getLogForDate(todayKey);
+            log.green = (log.green || 0) + delta;
+            log.isManual = true;
+            logs[todayKey] = log;
+            saveLogs();
+            renderTodayBanner();
+            renderCalendar();
+        }
+
+        function quickSetCow(litres) {
+            const todayKey = getTodayKey();
+            const log = getLogForDate(todayKey);
+            log.cow = litres;
+            log.isManual = true;
+            logs[todayKey] = log;
+            saveLogs();
+            renderTodayBanner();
+            renderCalendar();
+        }
+
+        function quickAddCow(delta) {
+            const todayKey = getTodayKey();
+            const log = getLogForDate(todayKey);
+            log.cow = (log.cow || 0) + delta;
+            log.isManual = true;
+            logs[todayKey] = log;
+            saveLogs();
+            renderTodayBanner();
+            renderCalendar();
+        }
+
+        // 3 & 4. MONTHLY LEDGER & CALENDAR RENDER
+        function changeMonth(offset) {
+            currentDate.setMonth(currentDate.getMonth() + offset);
+            renderCalendar();
         }
 
         function renderCalendar() {
@@ -278,21 +521,20 @@
 
             const grid = document.getElementById('calendarGrid');
             grid.innerHTML = `
-                <div class="font-bold text-slate-500 py-1">Sun</div>
-                <div class="font-bold text-slate-500 py-1">Mon</div>
-                <div class="font-bold text-slate-500 py-1">Tue</div>
-                <div class="font-bold text-slate-500 py-1">Wed</div>
-                <div class="font-bold text-slate-500 py-1">Thu</div>
-                <div class="font-bold text-slate-500 py-1">Fri</div>
-                <div class="font-bold text-slate-500 py-1">Sat</div>
+                <div class="font-bold text-slate-400 py-1">Sun</div>
+                <div class="font-bold text-slate-400 py-1">Mon</div>
+                <div class="font-bold text-slate-400 py-1">Tue</div>
+                <div class="font-bold text-slate-400 py-1">Wed</div>
+                <div class="font-bold text-slate-400 py-1">Thu</div>
+                <div class="font-bold text-slate-400 py-1">Fri</div>
+                <div class="font-bold text-slate-400 py-1">Sat</div>
             `;
 
             const firstDayIndex = new Date(year, month, 1).getDay();
             const totalDays = new Date(year, month + 1, 0).getDate();
 
-            // Blank spaces for previous month alignment
             for (let i = 0; i < firstDayIndex; i++) {
-                grid.innerHTML += `<div class="p-2"></div>`;
+                grid.innerHTML += `<div class="p-1.5"></div>`;
             }
 
             let monthlyAavinBill = 0;
@@ -301,11 +543,12 @@
             let monthlyCowLitres = 0;
             let monthlyExtrasTotal = 0;
 
+            const todayKey = getTodayKey();
+
             for (let day = 1; day <= totalDays; day++) {
                 const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const log = getLogForDate(dateKey);
 
-                // Calculations
                 const aavinCount = log.green + log.orange + log.blue;
                 const aavinCost = (log.green * settings.prices.green) + (log.orange * settings.prices.orange) + (log.blue * settings.prices.blue);
                 const cowCost = log.cow * settings.prices.cow;
@@ -317,19 +560,31 @@
                 monthlyCowLitres += log.cow;
                 monthlyExtrasTotal += extrasCost;
 
-                const isToday = new Date().toDateString() === new Date(year, month, day).toDateString();
+                const isToday = (dateKey === todayKey);
 
                 grid.innerHTML += `
-                    <div onclick="openDayModal('${dateKey}')" class="p-2 rounded-xl glass-card text-left cursor-pointer transition-all hover:border-cyan-400 ${isToday ? 'border-cyan-400 bg-cyan-950/20' : ''}">
-                        <div class="font-bold text-[11px] ${isToday ? 'text-cyan-400' : 'text-slate-300'}">${day}</div>
-                        <div class="text-[9px] text-emerald-400 font-semibold mt-0.5">${aavinCount} Pkt</div>
-                        <div class="text-[9px] text-amber-400 font-semibold">${log.cow} L</div>
-                        ${log.extras && log.extras.length ? `<div class="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1"></div>` : ''}
+                    <div onclick="openDayModal('${dateKey}')" class="p-2 rounded-2xl glass-card text-left cursor-pointer transition-all hover:border-purple-400 ios-bounce relative ${isToday ? 'border-2 border-purple-600 bg-purple-50/50' : ''}">
+                        <div class="flex items-center justify-between">
+                            <span class="font-extrabold text-[11px] ${isToday ? 'text-purple-700' : 'text-slate-800'}">${day}</span>
+                            ${log.isManual ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>' : ''}
+                        </div>
+                        
+                        <div class="mt-1 space-y-0.5">
+                            <div class="flex items-center gap-1 text-[10px] text-emerald-700 font-extrabold">
+                                <span class="w-3 h-3 text-emerald-600 inline-block"><svg class="w-full h-full"><use href="#icon-aavin-pouch"/></svg></span>
+                                <span>${aavinCount}</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-[10px] cow-brown-text font-extrabold">
+                                <span class="w-3 h-3 cow-brown-text inline-block"><svg class="w-full h-full"><use href="#icon-cow-head"/></svg></span>
+                                <span>${log.cow}L</span>
+                            </div>
+                        </div>
+
+                        ${log.extras && log.extras.length ? `<div class="absolute bottom-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-purple-600"></div>` : ''}
                     </div>
                 `;
             }
 
-            // Update Summary Card Balances
             document.getElementById('aavinMonthlyBill').innerText = `₹${monthlyAavinBill}`;
             document.getElementById('aavinMonthlyCount').innerText = `${monthlyAavinPackets} Packets`;
             document.getElementById('cowMilkMonthlyBill').innerText = `₹${monthlyCowBill}`;
@@ -338,7 +593,7 @@
             document.getElementById('grandTotalBill').innerText = `₹${monthlyAavinBill + monthlyCowBill + monthlyExtrasTotal}`;
         }
 
-        // Modal Controls & Editing
+        // 6. MODAL CONTROLS & EDITING
         let currentModalLog = null;
 
         function openDayModal(dateKey) {
@@ -364,11 +619,11 @@
             extrasContainer.innerHTML = '';
             (currentModalLog.extras || []).forEach((item, index) => {
                 extrasContainer.innerHTML += `
-                    <div class="flex items-center justify-between bg-slate-800/60 px-3 py-1.5 rounded-lg text-xs">
-                        <span class="text-slate-200">${item.name}</span>
+                    <div class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-xl text-xs border border-slate-200">
+                        <span class="font-bold text-slate-800">${item.name}</span>
                         <div class="flex items-center gap-2">
-                            <span class="font-bold text-cyan-400">₹${item.price}</span>
-                            <button onclick="removeExtraItem(${index})" class="text-rose-400 font-bold ml-1">✕</button>
+                            <span class="font-extrabold text-purple-700">₹${item.price}</span>
+                            <button onclick="removeExtraItem(${index})" class="text-rose-500 font-bold ml-1">✕</button>
                         </div>
                     </div>
                 `;
@@ -378,6 +633,7 @@
         function adjustQty(type, amount) {
             if (currentModalLog[type] + amount >= 0) {
                 currentModalLog[type] += amount;
+                currentModalLog.isManual = true;
                 updateModalUI();
             }
         }
@@ -385,6 +641,7 @@
         function adjustCowQty(amount) {
             if (currentModalLog.cow + amount >= 0) {
                 currentModalLog.cow += amount;
+                currentModalLog.isManual = true;
                 updateModalUI();
             }
         }
@@ -398,6 +655,7 @@
             if (name && !isNaN(price) && price > 0) {
                 if (!currentModalLog.extras) currentModalLog.extras = [];
                 currentModalLog.extras.push({ name, price });
+                currentModalLog.isManual = true;
                 nameInput.value = '';
                 priceInput.value = '';
                 updateModalUI();
@@ -406,17 +664,19 @@
 
         function removeExtraItem(index) {
             currentModalLog.extras.splice(index, 1);
+            currentModalLog.isManual = true;
             updateModalUI();
         }
 
         function saveDayLog() {
             logs[currentSelectedDateKey] = currentModalLog;
-            localStorage.setItem('atlas_milk_logs', JSON.stringify(logs));
+            saveLogs();
             closeDayModal();
             renderCalendar();
+            renderTodayBanner();
         }
 
-        // Settings Modal
+        // SETTINGS MODAL CONTROLS
         function openSettings() {
             document.getElementById('settingGreenPrice').value = settings.prices.green;
             document.getElementById('settingOrangePrice').value = settings.prices.orange;
@@ -439,6 +699,11 @@
             updateSettingsLabels();
             closeSettings();
             renderCalendar();
+            renderTodayBanner();
+        }
+
+        function saveLogs() {
+            localStorage.setItem('atlas_milk_logs', JSON.stringify(logs));
         }
     </script>
 </body>
