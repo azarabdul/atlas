@@ -21,23 +21,22 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- Firebase SDK Imports -->
+    <!-- Firebase SDK Imports & atlas-505 Configuration -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/13.1.0/firebase-firestore.js";
 
         // Firebase Configuration for project atlas-505
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "AIzaSy_ATLAS_505_KEY",
-                authDomain: "atlas-505.firebaseapp.com",
-                projectId: "atlas-505",
-                storageBucket: "atlas-505.appspot.com",
-                messagingSenderId: "50500000000",
-                appId: "1:50500000000:web:atlas505app"
-            };
+        const firebaseConfig = {
+            apiKey: "AIzaSyB51V0QZzVC3DDVZsZi9ocYhkfB3P3vZbk",
+            authDomain: "atlas-505.firebaseapp.com",
+            projectId: "atlas-505",
+            storageBucket: "atlas-505.firebasestorage.app",
+            messagingSenderId: "267924768904",
+            appId: "1:267924768904:web:032a3b910bb2420937773d",
+            measurementId: "G-M2LYFRRJPW"
+        };
 
         const app = initializeApp(firebaseConfig);
         window.db = getFirestore(app);
