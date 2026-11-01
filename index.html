@@ -1,830 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DairyDash - Family Milk Tracker</title>
-  
-  <!-- PWA Meta Tags -->
-  <meta name="theme-color" content="#4f46e5">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="Automated daily milk packet purchase and monthly bill tracking for families">
-  
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-            },
-            milk: {
-              card: '#ffffff',
-              accent: '#3b82f6',
-              bg: '#f8fafc'
-            }
-          },
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATLAS - Home Essentials & Asset Hub</title>
+    
+    <!-- PWA Web App Meta Tags -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ATLAS">
 
-  <style>
-    /* Custom Scrollbar & Aesthetics */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 99px; }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(226, 232, 240, 0.8);
-    }
-    .widget-shadow {
-      box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.15), 0 8px 10px -6px rgba(79, 70, 229, 0.1);
-    }
-    .touch-bounce {
-      transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .touch-bounce:active {
-      transform: scale(0.95);
-    }
-  </style>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .pulse-orb { box-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
+    </style>
 </head>
+<body class="min-h-screen pb-12">
 
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen pb-12 select-none">
-
-  <!-- Header Navigation Bar -->
-  <header class="sticky top-0 z-30 glass-card border-b border-slate-200/80 px-4 py-3 sm:px-6">
-    <div class="max-w-5xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
-          <i data-lucide="milk" class="w-6 h-6"></i>
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
+        <div class="max-w-xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center pulse-orb">
+                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wider text-slate-100 flex items-center gap-1.5">
+                        A.T.L.A.S.
+                    </h1>
+                    <p class="text-[10px] text-cyan-400 font-mono tracking-tight">SYSTEMS OPERATIONAL</p>
+                </div>
+            </div>
+            
+            <button onclick="openSettings()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+                <i data-lucide="settings" class="w-5 h-5"></i>
+            </button>
         </div>
-        <div>
-          <h1 class="text-lg font-bold leading-none text-slate-900 tracking-tight">DairyDash</h1>
-          <p class="text-xs font-medium text-slate-500 mt-0.5" id="household-label">Family Milk Ledger</p>
+    </header>
+
+    <main class="max-w-xl mx-auto px-4 mt-4 space-y-5">
+
+        <!-- Month Navigation Bar -->
+        <section class="glass-card rounded-2xl p-4 flex items-center justify-between">
+            <button onclick="changeMonth(-1)" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <div class="text-center">
+                <h2 id="currentMonthLabel" class="text-lg font-bold text-slate-100">October 2026</h2>
+                <p class="text-xs text-slate-400">Monthly Essential Ledger</p>
+            </div>
+            <button onclick="changeMonth(1)" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700">
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+        </section>
+
+        <!-- Monthly Bill Summary Section -->
+        <section class="grid grid-cols-2 gap-3">
+            <!-- Aavin Summary Card -->
+            <div class="glass-card rounded-2xl p-4 border-l-4 border-l-emerald-400">
+                <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
+                    <span>Aavin Packets</span>
+                    <i data-lucide="package" class="w-4 h-4 text-emerald-400"></i>
+                </div>
+                <div id="aavinMonthlyBill" class="text-xl font-extrabold text-emerald-400">₹0</div>
+                <div id="aavinMonthlyCount" class="text-[11px] text-slate-400 mt-1">0 packets</div>
+            </div>
+
+            <!-- Cow Milk Summary Card -->
+            <div class="glass-card rounded-2xl p-4 border-l-4 border-l-amber-400">
+                <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
+                    <span>Fresh Cow Milk</span>
+                    <i data-lucide="milk" class="w-4 h-4 text-amber-400"></i>
+                </div>
+                <div id="cowMilkMonthlyBill" class="text-xl font-extrabold text-amber-400">₹0</div>
+                <div id="cowMilkMonthlyCount" class="text-[11px] text-slate-400 mt-1">0 Litres</div>
+            </div>
+        </section>
+
+        <!-- Total Monthly Expense Card -->
+        <section class="glass-card rounded-2xl p-4 flex items-center justify-between bg-slate-800/80">
+            <div>
+                <p class="text-xs font-medium text-slate-400">Grand Total Monthly Bill</p>
+                <div id="grandTotalBill" class="text-2xl font-black text-cyan-400 mt-0.5">₹0</div>
+            </div>
+            <div class="text-right text-xs text-slate-400 space-y-0.5">
+                <div>Extras / Curd: <span id="extrasTotal" class="font-semibold text-slate-200">₹0</span></div>
+                <div class="text-[10px] text-slate-500">Auto-logged daily logs</div>
+            </div>
+        </section>
+
+        <!-- Calendar Log View -->
+        <section class="glass-card rounded-2xl p-4">
+            <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                <i data-lucide="calendar" class="w-4 h-4 text-cyan-400"></i> Daily Log Calendar
+            </h3>
+            <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 text-center text-xs">
+                <!-- Days rendered dynamically -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Day Edit Modal -->
+    <div id="dayModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl p-6 bg-slate-900 border border-slate-700 space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 id="modalDateTitle" class="font-bold text-slate-100">Edit Entry</h3>
+                <button onclick="closeDayModal()" class="text-slate-400 hover:text-slate-200">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Service 1: Aavin Packets -->
+            <div class="space-y-3">
+                <h4 class="text-xs font-semibold text-emerald-400 tracking-wide uppercase">1. Aavin Packet Milk (500ml)</h4>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-slate-800 p-2.5 rounded-xl text-center">
+                        <span class="text-xs text-emerald-300 font-medium block">Green (₹<span id="priceGreenLabel">24</span>)</span>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <button onclick="adjustQty('green', -1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">-</button>
+                            <span id="qtyGreen" class="font-bold text-slate-100">0</span>
+                            <button onclick="adjustQty('green', 1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800 p-2.5 rounded-xl text-center">
+                        <span class="text-xs text-amber-300 font-medium block">Orange (₹<span id="priceOrangeLabel">30</span>)</span>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <button onclick="adjustQty('orange', -1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">-</button>
+                            <span id="qtyOrange" class="font-bold text-slate-100">0</span>
+                            <button onclick="adjustQty('orange', 1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-slate-800 p-2.5 rounded-xl text-center">
+                        <span class="text-xs text-blue-300 font-medium block">Blue (₹<span id="priceBlueLabel">20</span>)</span>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <button onclick="adjustQty('blue', -1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">-</button>
+                            <span id="qtyBlue" class="font-bold text-slate-100">0</span>
+                            <button onclick="adjustQty('blue', 1)" class="w-6 h-6 rounded bg-slate-700 text-slate-200">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service 2: Cow Milk -->
+            <div class="space-y-2 border-t border-slate-800 pt-3">
+                <h4 class="text-xs font-semibold text-amber-400 tracking-wide uppercase">2. Fresh Cow Milk (Litre)</h4>
+                <div class="flex items-center justify-between bg-slate-800 p-3 rounded-xl">
+                    <span class="text-xs text-slate-300">Volume (₹<span id="priceCowLabel">60</span> / L)</span>
+                    <div class="flex items-center gap-3">
+                        <button onclick="adjustCowQty(-0.5)" class="w-7 h-7 rounded bg-slate-700 text-slate-200 font-bold">-</button>
+                        <span id="qtyCow" class="font-bold text-slate-100 text-sm">1.0 L</span>
+                        <button onclick="adjustCowQty(0.5)" class="w-7 h-7 rounded bg-slate-700 text-slate-200 font-bold">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extra Household Items -->
+            <div class="space-y-2 border-t border-slate-800 pt-3">
+                <h4 class="text-xs font-semibold text-cyan-400 tracking-wide uppercase">3. Extra Household Items (Ad-hoc)</h4>
+                <div class="flex gap-2">
+                    <input id="extraItemName" type="text" placeholder="e.g. Curd, Water Can" class="flex-1 bg-slate-800 text-xs text-slate-100 px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-cyan-400">
+                    <input id="extraItemPrice" type="number" placeholder="₹ Amount" class="w-24 bg-slate-800 text-xs text-slate-100 px-3 py-2 rounded-xl border border-slate-700 focus:outline-none focus:border-cyan-400">
+                    <button onclick="addExtraItem()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold px-3 py-2 rounded-xl text-xs">Add</button>
+                </div>
+                <div id="extrasList" class="space-y-1.5 pt-1">
+                    <!-- Dynamic extras list -->
+                </div>
+            </div>
+
+            <button onclick="saveDayLog()" class="w-full py-3 bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold rounded-xl text-sm transition-colors">
+                Save & Update ATLAS Log
+            </button>
         </div>
-      </div>
-
-      <!-- Action Nav & User Profile -->
-      <div class="flex items-center space-x-2">
-        <button id="widget-toggle-btn" onclick="toggleWidgetModal()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-semibold transition touch-bounce">
-          <i data-lucide="smartphone" class="w-4 h-4 text-indigo-600"></i>
-          <span class="hidden sm:inline">Android Widget View</span>
-        </button>
-
-        <button onclick="toggleSettingsModal()" class="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition touch-bounce" title="Household Settings">
-          <i data-lucide="settings" class="w-5 h-5"></i>
-        </button>
-
-        <!-- User Avatar / Login Button -->
-        <div id="auth-status-container" class="pl-1">
-          <button id="login-btn" onclick="handleAuthAction()" class="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-sm transition touch-bounce">
-            <i data-lucide="user" class="w-4 h-4"></i>
-            <span id="user-display-name">Demo User</span>
-          </button>
-        </div>
-      </div>
     </div>
-  </header>
 
-  <!-- Main Application Container -->
-  <main class="max-w-5xl mx-auto px-3 sm:px-6 pt-4 space-y-5">
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl p-6 bg-slate-900 border border-slate-700 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-slate-100">ATLAS Configuration</h3>
+                <button onclick="closeSettings()" class="text-slate-400 hover:text-slate-200">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
 
-    <!-- Top Banner: Today's Status Banner (Sticky Quick Tap) -->
-    <div class="bg-gradient-to-r from-brand-600 via-indigo-600 to-indigo-700 rounded-2xl p-4 sm:p-5 text-white shadow-lg shadow-brand-500/15 relative overflow-hidden">
-      <!-- Background SVG Accent -->
-      <div class="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
-        <i data-lucide="milk" class="w-48 h-48"></i>
-      </div>
+            <div class="space-y-3">
+                <h4 class="text-xs font-semibold text-slate-400 uppercase">Packet Milk Pricing (per half-litre)</h4>
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="text-[11px] text-emerald-400">Green (₹)</label>
+                        <input id="settingGreenPrice" type="number" value="24" class="w-full bg-slate-800 text-slate-100 p-2 rounded-lg text-xs border border-slate-700">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-amber-400">Orange (₹)</label>
+                        <input id="settingOrangePrice" type="number" value="30" class="w-full bg-slate-800 text-slate-100 p-2 rounded-lg text-xs border border-slate-700">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-blue-400">Blue (₹)</label>
+                        <input id="settingBluePrice" type="number" value="20" class="w-full bg-slate-800 text-slate-100 p-2 rounded-lg text-xs border border-slate-700">
+                    </div>
+                </div>
 
-      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div class="flex items-center space-x-2 text-indigo-200 text-xs font-semibold uppercase tracking-wider mb-1">
-            <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>Today's Log (<span id="today-date-text">Today</span>)</span>
-          </div>
-          <div class="flex items-baseline space-x-3">
-            <h2 id="today-packet-count" class="text-3xl sm:text-4xl font-extrabold tracking-tight">2 Packets</h2>
-            <span id="today-cost-text" class="text-lg text-indigo-100 font-medium">₹60</span>
-            <span id="today-status-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/50 border border-indigo-300/30 text-indigo-100">
-              Auto Logged
-            </span>
-          </div>
+                <div class="pt-2">
+                    <label class="text-xs font-semibold text-slate-400 uppercase">Fresh Cow Milk Price (per Litre)</label>
+                    <input id="settingCowPrice" type="number" value="60" class="w-full bg-slate-800 text-slate-100 p-2 rounded-lg text-xs border border-slate-700 mt-1">
+                </div>
+            </div>
+
+            <button onclick="saveSettings()" class="w-full py-2.5 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold rounded-xl text-xs transition-colors">
+                Save Price Settings
+            </button>
         </div>
-
-        <!-- Quick Taps for Today -->
-        <div class="flex flex-wrap items-center gap-2">
-          <button onclick="quickUpdateToday(0)" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition touch-bounce">
-            🚫 No Milk (0)
-          </button>
-          <button onclick="quickUpdateToday(1)" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition touch-bounce">
-            🥛 1 Packet
-          </button>
-          <button onclick="quickUpdateToday(2)" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition touch-bounce">
-            🥛🥛 2 Packets
-          </button>
-          <button onclick="quickAdjustToday(1)" class="px-3 py-2 rounded-xl bg-emerald-500/80 hover:bg-emerald-500 text-white text-xs font-semibold transition touch-bounce">
-            ➕ +1 Extra
-          </button>
-        </div>
-      </div>
     </div>
 
-    <!-- Monthly Summary Bar -->
-    <div class="glass-card rounded-2xl p-4 shadow-sm border border-slate-200/80 flex flex-col md:flex-row items-center justify-between gap-4">
-      
-      <!-- Month Selector Controls -->
-      <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-start">
-        <button onclick="changeMonth(-1)" class="p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition touch-bounce border border-slate-200">
-          <i data-lucide="chevron-left" class="w-5 h-5"></i>
-        </button>
-        <div class="text-center">
-          <h2 id="current-month-display" class="text-lg font-bold text-slate-900 tracking-tight">October 2026</h2>
-          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Monthly Dashboard</p>
-        </div>
-        <button onclick="changeMonth(1)" class="p-2 rounded-xl hover:bg-slate-100 text-slate-600 transition touch-bounce border border-slate-200">
-          <i data-lucide="chevron-right" class="w-5 h-5"></i>
-        </button>
-      </div>
+    <!-- Application Logic Script -->
+    <script>
+        // Core App State
+        let currentDate = new Date();
+        let currentSelectedDateKey = null;
 
-      <!-- Key Metrics Stats Cards -->
-      <div class="grid grid-cols-3 gap-3 w-full md:w-auto">
-        <div class="bg-indigo-50/60 border border-indigo-100/80 rounded-xl p-2.5 sm:px-4 text-center">
-          <p class="text-[10px] font-bold text-indigo-600/80 uppercase tracking-wider">Total Packets</p>
-          <p id="stat-total-packets" class="text-xl sm:text-2xl font-extrabold text-indigo-900 mt-0.5">62</p>
-        </div>
-
-        <div class="bg-emerald-50/60 border border-emerald-100/80 rounded-xl p-2.5 sm:px-4 text-center">
-          <p class="text-[10px] font-bold text-emerald-600/80 uppercase tracking-wider">Total Bill</p>
-          <p id="stat-total-amount" class="text-xl sm:text-2xl font-extrabold text-emerald-900 mt-0.5">₹1,860</p>
-        </div>
-
-        <div class="bg-amber-50/60 border border-amber-100/80 rounded-xl p-2.5 sm:px-4 text-center">
-          <p class="text-[10px] font-bold text-amber-600/80 uppercase tracking-wider">Exceptions</p>
-          <p id="stat-exceptions" class="text-xl sm:text-2xl font-extrabold text-amber-900 mt-0.5">3 Days</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Calendar View Grid Container -->
-    <div class="glass-card rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
-      <!-- Weekday Headers -->
-      <div class="grid grid-cols-7 bg-slate-100/80 border-b border-slate-200 text-center py-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
-        <span>Sun</span>
-        <span>Mon</span>
-        <span>Tue</span>
-        <span>Wed</span>
-        <span>Thu</span>
-        <span>Fri</span>
-        <span>Sat</span>
-      </div>
-
-      <!-- Calendar Days Grid -->
-      <div id="calendar-grid" class="grid grid-cols-7 gap-px bg-slate-200/60">
-        <!-- Rendered dynamically by JS -->
-      </div>
-    </div>
-
-    <!-- Recent Activity Trail -->
-    <div class="glass-card rounded-2xl p-4 border border-slate-200/80">
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
-          <i data-lucide="history" class="w-4 h-4 text-brand-600"></i>
-          <span>Recent Family Activity</span>
-        </h3>
-        <span class="text-[11px] text-slate-400">Live sync</span>
-      </div>
-      <div id="activity-log-container" class="space-y-2 text-xs text-slate-600 max-h-32 overflow-y-auto">
-        <!-- Dynamic logs -->
-      </div>
-    </div>
-
-  </main>
-
-  <!-- ================= MODALS & DRAWERS ================= -->
-
-  <!-- 1. Single-Tap Date Edit Modal -->
-  <div id="date-edit-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-opacity">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-5 animate-in fade-in zoom-in-95 duration-150">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <div>
-          <h3 id="modal-date-title" class="text-lg font-bold text-slate-900">October 23, 2026</h3>
-          <p class="text-xs text-slate-400">Update milk quantity for this day</p>
-        </div>
-        <button onclick="closeModal('date-edit-modal')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <!-- Stepper Controls -->
-      <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/70 text-center space-y-3">
-        <span class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Packets Purchased</span>
-        <div class="flex items-center justify-center space-x-4">
-          <button onclick="adjustModalPacketCount(-1)" class="w-11 h-11 rounded-2xl bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xl font-bold flex items-center justify-center shadow-sm touch-bounce">
-            -
-          </button>
-          <span id="modal-packet-val" class="text-4xl font-extrabold text-slate-900 w-16 text-center">2</span>
-          <button onclick="adjustModalPacketCount(1)" class="w-11 h-11 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-xl font-bold flex items-center justify-center shadow-md shadow-brand-500/20 touch-bounce">
-            +
-          </button>
-        </div>
-        <p id="modal-calculated-cost" class="text-xs font-semibold text-brand-600">Total: ₹60</p>
-      </div>
-
-      <!-- Quick Preset Shortcuts -->
-      <div class="grid grid-cols-2 gap-2">
-        <button onclick="setModalPreset(0)" class="py-2 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold touch-bounce">
-          🚫 No Milk (0)
-        </button>
-        <button onclick="setModalPreset('default')" class="py-2 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold touch-bounce">
-          🥛 Default (<span id="modal-default-qty-label">2</span>)
-        </button>
-        <button onclick="setModalPreset(3)" class="py-2 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold touch-bounce">
-          🥛🥛🥛 3 Packets
-        </button>
-        <button onclick="setModalPreset(4)" class="py-2 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold touch-bounce">
-          ➕ 4 Packets
-        </button>
-      </div>
-
-      <!-- Note Input -->
-      <div>
-        <label class="block text-xs font-semibold text-slate-600 mb-1">Optional Note</label>
-        <input type="text" id="modal-note-input" placeholder="e.g. Guests over, Travelled" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs focus:ring-2 focus:ring-brand-500 outline-none">
-      </div>
-
-      <!-- Save & Footer -->
-      <div class="space-y-2 pt-2 border-t border-slate-100">
-        <button onclick="saveModalDateEntry()" class="w-full py-3 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-md shadow-brand-500/25 transition touch-bounce">
-          Save Entry
-        </button>
-        <p id="modal-last-edited" class="text-[10px] text-center text-slate-400">Not modified yet</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Household & Settings Modal -->
-  <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-opacity">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-5 max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <div class="flex items-center space-x-2">
-          <i data-lucide="sliders" class="w-5 h-5 text-brand-600"></i>
-          <h3 class="text-lg font-bold text-slate-900">Household Settings</h3>
-        </div>
-        <button onclick="closeModal('settings-modal')" class="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <!-- Auto Log Settings Switch -->
-      <div class="bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100 flex items-center justify-between">
-        <div>
-          <h4 class="text-xs font-bold text-slate-900">Auto Daily Logging</h4>
-          <p class="text-[11px] text-slate-500">Automatically logs default packets at midnight</p>
-        </div>
-        <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" id="setting-autolog-toggle" class="sr-only peer" checked>
-          <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
-        </label>
-      </div>
-
-      <!-- Defaults Inputs -->
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Default Daily Qty</label>
-          <input type="number" id="setting-default-qty" min="0" value="2" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold focus:ring-2 focus:ring-brand-500 outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 mb-1">Price per Packet (₹)</label>
-          <input type="number" id="setting-packet-price" min="1" value="30" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold focus:ring-2 focus:ring-brand-500 outline-none">
-        </div>
-      </div>
-
-      <!-- Household Members Management -->
-      <div class="space-y-2 border-t border-slate-100 pt-4">
-        <h4 class="text-xs font-bold text-slate-900 flex items-center justify-between">
-          <span>Allowed Family Members</span>
-          <span class="text-[10px] text-indigo-600 font-semibold bg-indigo-50 px-2 py-0.5 rounded-md">Shared Access</span>
-        </h4>
-        
-        <div id="family-emails-list" class="space-y-1.5 max-h-28 overflow-y-auto">
-          <!-- Populated by JS -->
-        </div>
-
-        <div class="flex space-x-2 pt-1">
-          <input type="email" id="new-member-email" placeholder="family.member@gmail.com" class="flex-1 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs outline-none">
-          <button onclick="addFamilyMember()" class="px-3 py-1.5 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 touch-bounce">
-            Add
-          </button>
-        </div>
-      </div>
-
-      <!-- Vendor Settlement Notes -->
-      <div class="space-y-1 border-t border-slate-100 pt-3">
-        <label class="block text-xs font-semibold text-slate-600">Vendor Payment Details</label>
-        <input type="text" id="setting-vendor-info" placeholder="Vendor: Amul Parlour (UPI: amul@upi)" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs outline-none">
-      </div>
-
-      <button onclick="saveSettings()" class="w-full py-3 rounded-2xl bg-brand-600 text-white text-xs font-bold shadow-md shadow-brand-500/20 touch-bounce">
-        Save Settings
-      </button>
-    </div>
-  </div>
-
-  <!-- 3. Android Home Screen Widget Simulator Modal -->
-  <div id="widget-sim-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md hidden transition-opacity">
-    <div class="max-w-xs w-full space-y-4">
-      
-      <!-- Top Android Widget Frame -->
-      <div class="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl p-5 shadow-2xl border border-white/20 widget-shadow relative overflow-hidden space-y-4">
-        
-        <div class="flex items-center justify-between border-b border-white/10 pb-2">
-          <div class="flex items-center space-x-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span class="text-[11px] font-bold tracking-wider uppercase text-indigo-200">Android Home Widget</span>
-          </div>
-          <button onclick="closeModal('widget-sim-modal')" class="text-slate-400 hover:text-white">
-            <i data-lucide="x-circle" class="w-5 h-5"></i>
-          </button>
-        </div>
-
-        <div class="text-center space-y-1">
-          <p class="text-xs text-indigo-300 font-medium">Today's Milk Count</p>
-          <h2 id="widget-qty-display" class="text-4xl font-extrabold tracking-tight">2 Packets</h2>
-          <p id="widget-cost-display" class="text-sm font-semibold text-emerald-400">Total: ₹60</p>
-        </div>
-
-        <!-- Quick 1-Tap Widget Action Grid -->
-        <div class="grid grid-cols-2 gap-2 pt-2">
-          <button onclick="quickUpdateToday(0); syncWidgetDisplay();" class="py-2.5 px-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold transition touch-bounce text-center">
-            🚫 0 Milk
-          </button>
-          <button onclick="quickUpdateToday(1); syncWidgetDisplay();" class="py-2.5 px-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold transition touch-bounce text-center">
-            🥛 1 Packet
-          </button>
-          <button onclick="quickUpdateToday(2); syncWidgetDisplay();" class="py-2.5 px-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold transition touch-bounce text-center">
-            🥛🥛 2 Packets
-          </button>
-          <button onclick="quickAdjustToday(1); syncWidgetDisplay();" class="py-2.5 px-3 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition touch-bounce text-center">
-            ➕ +1 Extra
-          </button>
-        </div>
-
-        <div class="text-[10px] text-center text-indigo-300/70 pt-1">
-          Tap any button to immediately update family ledger
-        </div>
-      </div>
-
-      <div class="text-center">
-        <p class="text-xs text-slate-300 bg-slate-800/80 px-3 py-1.5 rounded-full inline-block backdrop-blur-sm border border-slate-700">
-          💡 On Android: Use Hermit / Web Widget to pin this to home screen
-        </p>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- ================= JAVASCRIPT & LOGIC ================= -->
-  <script>
-    // --- APP STATE ---
-    let currentDate = new Date();
-    let selectedYear = currentDate.getFullYear();
-    let selectedMonth = currentDate.getMonth(); // 0-indexed
-
-    // Configuration Settings
-    let settings = {
-      defaultPackets: 2,
-      pricePerPacket: 30,
-      autoLogEnabled: true,
-      allowedUsers: ['family.home@gmail.com', 'spouse@gmail.com'],
-      vendorInfo: 'Amul Milk Parlour (Daily Delivery)'
-    };
-
-    // Daily Ledger Data Store: Key format "YYYY-MM-DD"
-    let dailyLogs = {};
-
-    // Current User Session State
-    let currentUser = {
-      name: 'Ramesh (You)',
-      email: 'family.home@gmail.com',
-      isLoggedIn: true
-    };
-
-    // Active Date being edited in Modal
-    let activeModalDateStr = null;
-    let modalCurrentQty = 2;
-
-    // --- INITIALIZATION ---
-    window.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      loadStoredSettings();
-      seedInitialDemoLogs();
-      checkAndRunAutoLog();
-      renderApp();
-    });
-
-    // Seed mock data for realistic calendar preview
-    function seedInitialDemoLogs() {
-      const year = selectedYear;
-      const monthStr = String(selectedMonth + 1).padStart(2, '0');
-      
-      // Auto-populate past days of the month with defaults & a few exceptions
-      const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dateKey = `${year}-${monthStr}-${String(day).padStart(2, '0')}`;
-        
-        // Add random exceptions for demo feel
-        if (day === 5) {
-          dailyLogs[dateKey] = { packets: 0, isException: true, note: 'Travelled', updatedBy: 'Ramesh', updatedAt: '08:15 AM' };
-        } else if (day === 12) {
-          dailyLogs[dateKey] = { packets: 4, isException: true, note: 'Guests at home', updatedBy: 'Priya', updatedAt: '07:30 AM' };
-        } else if (day === 18) {
-          dailyLogs[dateKey] = { packets: 3, isException: true, note: 'Extra tea', updatedBy: 'Ramesh', updatedAt: '09:00 AM' };
-        } else if (day <= currentDate.getDate()) {
-          dailyLogs[dateKey] = { packets: settings.defaultPackets, isException: false, note: '', updatedBy: 'Auto-System', updatedAt: '00:05 AM' };
-        }
-      }
-    }
-
-    // Default Midnight Auto-logging Logic
-    function checkAndRunAutoLog() {
-      if (!settings.autoLogEnabled) return;
-
-      const todayKey = getTodayDateKey();
-      if (!dailyLogs[todayKey]) {
-        dailyLogs[todayKey] = {
-          packets: settings.defaultPackets,
-          isException: false,
-          note: '',
-          updatedBy: 'Auto System',
-          updatedAt: '00:05 AM'
+        // Default Config Settings
+        let settings = {
+            prices: { green: 24, orange: 30, blue: 20, cow: 60 }
         };
-      }
-    }
 
-    // Get today key string "YYYY-MM-DD"
-    function getTodayDateKey() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const d = String(now.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
-    }
+        // Local Storage / State Database
+        let logs = JSON.parse(localStorage.getItem('atlas_milk_logs')) || {};
+        let savedSettings = JSON.parse(localStorage.getItem('atlas_settings'));
+        if (savedSettings) settings = savedSettings;
 
-    // --- RENDER LOGIC ---
-    function renderApp() {
-      renderHeaderAndTodayBanner();
-      renderMonthlySummary();
-      renderCalendar();
-      renderActivityLog();
-      syncWidgetDisplay();
-    }
+        // Initialize App
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            updateSettingsLabels();
+            renderCalendar();
+        });
 
-    function renderHeaderAndTodayBanner() {
-      const todayKey = getTodayDateKey();
-      const todayLog = dailyLogs[todayKey] || { packets: settings.defaultPackets, isException: false };
-      
-      const todayPackets = todayLog.packets;
-      const todayCost = todayPackets * settings.pricePerPacket;
-
-      document.getElementById('today-packet-count').innerText = `${todayPackets} Packet${todayPackets === 1 ? '' : 's'}`;
-      document.getElementById('today-cost-text').innerText = `₹${todayCost}`;
-      document.getElementById('today-date-text').innerText = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-      const statusBadge = document.getElementById('today-status-badge');
-      if (todayLog.isException) {
-        statusBadge.innerText = 'Manually Modified';
-        statusBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/40 border border-amber-300/40 text-amber-100';
-      } else {
-        statusBadge.innerText = 'Auto Logged';
-        statusBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/50 border border-indigo-300/30 text-indigo-100';
-      }
-    }
-
-    function renderMonthlySummary() {
-      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      document.getElementById('current-month-display').innerText = `${monthNames[selectedMonth]} ${selectedYear}`;
-
-      let totalPackets = 0;
-      let exceptionCount = 0;
-
-      const prefix = `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}`;
-      
-      Object.keys(dailyLogs).forEach(dateKey => {
-        if (dateKey.startsWith(prefix)) {
-          const log = dailyLogs[dateKey];
-          totalPackets += log.packets;
-          if (log.isException) exceptionCount++;
-        }
-      });
-
-      const totalAmount = totalPackets * settings.pricePerPacket;
-
-      document.getElementById('stat-total-packets').innerText = totalPackets;
-      document.getElementById('stat-total-amount').innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
-      document.getElementById('stat-exceptions').innerText = `${exceptionCount} Day${exceptionCount === 1 ? '' : 's'}`;
-    }
-
-    function renderCalendar() {
-      const grid = document.getElementById('calendar-grid');
-      grid.innerHTML = '';
-
-      const firstDayIndex = new Date(selectedYear, selectedMonth, 1).getDay();
-      const daysInMonth = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-      const todayKey = getTodayDateKey();
-
-      // Blank slots for start of month
-      for (let i = 0; i < firstDayIndex; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.className = 'bg-slate-50/50 min-h-[75px] sm:min-h-[90px]';
-        grid.appendChild(emptyCell);
-      }
-
-      // Populate calendar days
-      for (let day = 1; day <= daysInMonth; day++) {
-        const monthStr = String(selectedMonth + 1).padStart(2, '0');
-        const dayStr = String(day).padStart(2, '0');
-        const dateKey = `${selectedYear}-${monthStr}-${dayStr}`;
-
-        const log = dailyLogs[dateKey] || { packets: settings.defaultPackets, isException: false };
-        const dayCost = log.packets * settings.pricePerPacket;
-        const isToday = (dateKey === todayKey);
-
-        const dayCell = document.createElement('div');
-        
-        // Visual Styling rules based on state
-        let cellBgClass = 'bg-white hover:bg-slate-50';
-        if (isToday) {
-          cellBgClass = 'bg-indigo-50/70 border-2 border-brand-500 hover:bg-indigo-50';
-        } else if (log.packets === 0) {
-          cellBgClass = 'bg-rose-50/50 hover:bg-rose-50';
-        } else if (log.isException) {
-          cellBgClass = 'bg-amber-50/50 hover:bg-amber-50';
+        function updateSettingsLabels() {
+            document.getElementById('priceGreenLabel').innerText = settings.prices.green;
+            document.getElementById('priceOrangeLabel').innerText = settings.prices.orange;
+            document.getElementById('priceBlueLabel').innerText = settings.prices.blue;
+            document.getElementById('priceCowLabel').innerText = settings.prices.cow;
         }
 
-        dayCell.className = `${cellBgClass} min-h-[75px] sm:min-h-[95px] p-2 flex flex-col justify-between cursor-pointer transition touch-bounce border-r border-b border-slate-100 relative`;
-        dayCell.onclick = () => openDateEditModal(dateKey);
+        function changeMonth(offset) {
+            currentDate.setMonth(currentDate.getMonth() + offset);
+            renderCalendar();
+        }
 
-        // Badge styling
-        let badgeColor = 'bg-slate-100 text-slate-700';
-        if (log.packets === 0) badgeColor = 'bg-rose-100 text-rose-700 font-bold';
-        else if (log.isException) badgeColor = 'bg-amber-100 text-amber-800 font-bold';
-        else if (log.packets > settings.defaultPackets) badgeColor = 'bg-emerald-100 text-emerald-800 font-bold';
+        function getLogForDate(dateKey) {
+            // Default Auto-Logging Rule: 2 Green Packets + 1 Litre Cow Milk
+            if (!logs[dateKey]) {
+                return {
+                    green: 2,
+                    orange: 0,
+                    blue: 0,
+                    cow: 1.0,
+                    extras: []
+                };
+            }
+            return logs[dateKey];
+        }
 
-        dayCell.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold ${isToday ? 'text-brand-600 font-extrabold scale-110' : 'text-slate-700'}">${day}</span>
-            ${isToday ? '<span class="text-[9px] uppercase font-extrabold bg-brand-600 text-white px-1.5 py-0.2 rounded-md">Today</span>' : ''}
-          </div>
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
 
-          <div class="my-1">
-            <span class="inline-block px-2 py-0.5 rounded-lg text-xs ${badgeColor}">
-              ${log.packets} ${log.packets === 1 ? 'pkt' : 'pkts'}
-            </span>
-          </div>
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById('currentMonthLabel').innerText = `${monthNames[month]} ${year}`;
 
-          <div class="flex items-center justify-between text-[10px] text-slate-400 font-medium">
-            <span>₹${dayCost}</span>
-            ${log.note ? '<i data-lucide="message-square" class="w-3 h-3 text-amber-500"></i>' : ''}
-          </div>
-        `;
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = `
+                <div class="font-bold text-slate-500 py-1">Sun</div>
+                <div class="font-bold text-slate-500 py-1">Mon</div>
+                <div class="font-bold text-slate-500 py-1">Tue</div>
+                <div class="font-bold text-slate-500 py-1">Wed</div>
+                <div class="font-bold text-slate-500 py-1">Thu</div>
+                <div class="font-bold text-slate-500 py-1">Fri</div>
+                <div class="font-bold text-slate-500 py-1">Sat</div>
+            `;
 
-        grid.appendChild(dayCell);
-      }
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
 
-      lucide.createIcons();
-    }
+            // Blank spaces for previous month alignment
+            for (let i = 0; i < firstDayIndex; i++) {
+                grid.innerHTML += `<div class="p-2"></div>`;
+            }
 
-    function renderActivityLog() {
-      const container = document.getElementById('activity-log-container');
-      container.innerHTML = '';
+            let monthlyAavinBill = 0;
+            let monthlyAavinPackets = 0;
+            let monthlyCowBill = 0;
+            let monthlyCowLitres = 0;
+            let monthlyExtrasTotal = 0;
 
-      const keys = Object.keys(dailyLogs).reverse().slice(0, 4);
+            for (let day = 1; day <= totalDays; day++) {
+                const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const log = getLogForDate(dateKey);
 
-      if (keys.length === 0) {
-        container.innerHTML = '<p class="text-slate-400 italic">No recent modifications.</p>';
-        return;
-      }
+                // Calculations
+                const aavinCount = log.green + log.orange + log.blue;
+                const aavinCost = (log.green * settings.prices.green) + (log.orange * settings.prices.orange) + (log.blue * settings.prices.blue);
+                const cowCost = log.cow * settings.prices.cow;
+                const extrasCost = (log.extras || []).reduce((acc, item) => acc + item.price, 0);
 
-      keys.forEach(key => {
-        const log = dailyLogs[key];
-        const logItem = document.createElement('div');
-        logItem.className = 'flex items-center justify-between bg-slate-50 p-2 rounded-xl border border-slate-100';
-        
-        logItem.innerHTML = `
-          <div class="flex items-center space-x-2">
-            <div class="w-2 h-2 rounded-full ${log.isException ? 'bg-amber-500' : 'bg-emerald-500'}"></div>
-            <span><strong>${key}</strong>: set to ${log.packets} pkts</span>
-            ${log.note ? `<span class="text-slate-400">("${log.note}")</span>` : ''}
-          </div>
-          <span class="text-[10px] text-slate-400">By ${log.updatedBy || 'User'}</span>
-        `;
-        container.appendChild(logItem);
-      });
-    }
+                monthlyAavinBill += aavinCost;
+                monthlyAavinPackets += aavinCount;
+                monthlyCowBill += cowCost;
+                monthlyCowLitres += log.cow;
+                monthlyExtrasTotal += extrasCost;
 
-    // --- QUICK TAPS & ACTIONS ---
-    function quickUpdateToday(qty) {
-      const todayKey = getTodayDateKey();
-      dailyLogs[todayKey] = {
-        packets: qty,
-        isException: (qty !== settings.defaultPackets),
-        note: qty === 0 ? 'Paused for day' : '',
-        updatedBy: currentUser.name,
-        updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      renderApp();
-    }
+                const isToday = new Date().toDateString() === new Date(year, month, day).toDateString();
 
-    function quickAdjustToday(delta) {
-      const todayKey = getTodayDateKey();
-      const current = dailyLogs[todayKey] ? dailyLogs[todayKey].packets : settings.defaultPackets;
-      const newQty = Math.max(0, current + delta);
-      quickUpdateToday(newQty);
-    }
+                grid.innerHTML += `
+                    <div onclick="openDayModal('${dateKey}')" class="p-2 rounded-xl glass-card text-left cursor-pointer transition-all hover:border-cyan-400 ${isToday ? 'border-cyan-400 bg-cyan-950/20' : ''}">
+                        <div class="font-bold text-[11px] ${isToday ? 'text-cyan-400' : 'text-slate-300'}">${day}</div>
+                        <div class="text-[9px] text-emerald-400 font-semibold mt-0.5">${aavinCount} Pkt</div>
+                        <div class="text-[9px] text-amber-400 font-semibold">${log.cow} L</div>
+                        ${log.extras && log.extras.length ? `<div class="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1"></div>` : ''}
+                    </div>
+                `;
+            }
 
-    function changeMonth(delta) {
-      selectedMonth += delta;
-      if (selectedMonth < 0) {
-        selectedMonth = 11;
-        selectedYear--;
-      } else if (selectedMonth > 11) {
-        selectedMonth = 0;
-        selectedYear++;
-      }
-      renderApp();
-    }
+            // Update Summary Card Balances
+            document.getElementById('aavinMonthlyBill').innerText = `₹${monthlyAavinBill}`;
+            document.getElementById('aavinMonthlyCount').innerText = `${monthlyAavinPackets} Packets`;
+            document.getElementById('cowMilkMonthlyBill').innerText = `₹${monthlyCowBill}`;
+            document.getElementById('cowMilkMonthlyCount').innerText = `${monthlyCowLitres.toFixed(1)} Litres`;
+            document.getElementById('extrasTotal').innerText = `₹${monthlyExtrasTotal}`;
+            document.getElementById('grandTotalBill').innerText = `₹${monthlyAavinBill + monthlyCowBill + monthlyExtrasTotal}`;
+        }
 
-    // --- MODAL CONTROLS ---
-    function openDateEditModal(dateKey) {
-      activeModalDateStr = dateKey;
-      const log = dailyLogs[dateKey] || { packets: settings.defaultPackets, note: '', updatedBy: 'None' };
+        // Modal Controls & Editing
+        let currentModalLog = null;
 
-      modalCurrentQty = log.packets;
+        function openDayModal(dateKey) {
+            currentSelectedDateKey = dateKey;
+            currentModalLog = JSON.parse(JSON.stringify(getLogForDate(dateKey)));
+            
+            document.getElementById('modalDateTitle').innerText = `Edit Log: ${dateKey}`;
+            updateModalUI();
+            document.getElementById('dayModal').classList.remove('hidden');
+        }
 
-      document.getElementById('modal-date-title').innerText = dateKey;
-      document.getElementById('modal-default-qty-label').innerText = settings.defaultPackets;
-      document.getElementById('modal-note-input').value = log.note || '';
-      document.getElementById('modal-last-edited').innerText = log.updatedBy ? `Last updated by ${log.updatedBy}` : 'Not modified yet';
+        function closeDayModal() {
+            document.getElementById('dayModal').classList.add('hidden');
+        }
 
-      updateModalQtyDisplay();
-      document.getElementById('date-edit-modal').classList.remove('hidden');
-    }
+        function updateModalUI() {
+            document.getElementById('qtyGreen').innerText = currentModalLog.green;
+            document.getElementById('qtyOrange').innerText = currentModalLog.orange;
+            document.getElementById('qtyBlue').innerText = currentModalLog.blue;
+            document.getElementById('qtyCow').innerText = `${currentModalLog.cow.toFixed(1)} L`;
 
-    function adjustModalPacketCount(delta) {
-      modalCurrentQty = Math.max(0, modalCurrentQty + delta);
-      updateModalQtyDisplay();
-    }
+            const extrasContainer = document.getElementById('extrasList');
+            extrasContainer.innerHTML = '';
+            (currentModalLog.extras || []).forEach((item, index) => {
+                extrasContainer.innerHTML += `
+                    <div class="flex items-center justify-between bg-slate-800/60 px-3 py-1.5 rounded-lg text-xs">
+                        <span class="text-slate-200">${item.name}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-cyan-400">₹${item.price}</span>
+                            <button onclick="removeExtraItem(${index})" class="text-rose-400 font-bold ml-1">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-    function setModalPreset(val) {
-      if (val === 'default') modalCurrentQty = settings.defaultPackets;
-      else modalCurrentQty = val;
-      updateModalQtyDisplay();
-    }
+        function adjustQty(type, amount) {
+            if (currentModalLog[type] + amount >= 0) {
+                currentModalLog[type] += amount;
+                updateModalUI();
+            }
+        }
 
-    function updateModalQtyDisplay() {
-      document.getElementById('modal-packet-val').innerText = modalCurrentQty;
-      document.getElementById('modal-calculated-cost').innerText = `Total: ₹${modalCurrentQty * settings.pricePerPacket}`;
-    }
+        function adjustCowQty(amount) {
+            if (currentModalLog.cow + amount >= 0) {
+                currentModalLog.cow += amount;
+                updateModalUI();
+            }
+        }
 
-    function saveModalDateEntry() {
-      if (!activeModalDateStr) return;
+        function addExtraItem() {
+            const nameInput = document.getElementById('extraItemName');
+            const priceInput = document.getElementById('extraItemPrice');
+            const name = nameInput.value.trim();
+            const price = parseFloat(priceInput.value);
 
-      const noteVal = document.getElementById('modal-note-input').value.trim();
+            if (name && !isNaN(price) && price > 0) {
+                if (!currentModalLog.extras) currentModalLog.extras = [];
+                currentModalLog.extras.push({ name, price });
+                nameInput.value = '';
+                priceInput.value = '';
+                updateModalUI();
+            }
+        }
 
-      dailyLogs[activeModalDateStr] = {
-        packets: modalCurrentQty,
-        isException: (modalCurrentQty !== settings.defaultPackets),
-        note: noteVal,
-        updatedBy: currentUser.name,
-        updatedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
+        function removeExtraItem(index) {
+            currentModalLog.extras.splice(index, 1);
+            updateModalUI();
+        }
 
-      closeModal('date-edit-modal');
-      renderApp();
-    }
+        function saveDayLog() {
+            logs[currentSelectedDateKey] = currentModalLog;
+            localStorage.setItem('atlas_milk_logs', JSON.stringify(logs));
+            closeDayModal();
+            renderCalendar();
+        }
 
-    // --- HOUSEHOLD SETTINGS CONTROLS ---
-    function toggleSettingsModal() {
-      document.getElementById('setting-autolog-toggle').checked = settings.autoLogEnabled;
-      document.getElementById('setting-default-qty').value = settings.defaultPackets;
-      document.getElementById('setting-packet-price').value = settings.pricePerPacket;
-      document.getElementById('setting-vendor-info').value = settings.vendorInfo || '';
+        // Settings Modal
+        function openSettings() {
+            document.getElementById('settingGreenPrice').value = settings.prices.green;
+            document.getElementById('settingOrangePrice').value = settings.prices.orange;
+            document.getElementById('settingBluePrice').value = settings.prices.blue;
+            document.getElementById('settingCowPrice').value = settings.prices.cow;
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
 
-      renderFamilyMembersList();
-      document.getElementById('settings-modal').classList.remove('hidden');
-    }
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
 
-    function renderFamilyMembersList() {
-      const container = document.getElementById('family-emails-list');
-      container.innerHTML = '';
+        function saveSettings() {
+            settings.prices.green = parseFloat(document.getElementById('settingGreenPrice').value) || 24;
+            settings.prices.orange = parseFloat(document.getElementById('settingOrangePrice').value) || 30;
+            settings.prices.blue = parseFloat(document.getElementById('settingBluePrice').value) || 20;
+            settings.prices.cow = parseFloat(document.getElementById('settingCowPrice').value) || 60;
 
-      settings.allowedUsers.forEach(email => {
-        const item = document.createElement('div');
-        item.className = 'flex items-center justify-between bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/60 text-xs';
-        item.innerHTML = `
-          <span class="text-slate-700 font-medium">${email}</span>
-          <button onclick="removeFamilyMember('${email}')" class="text-slate-400 hover:text-rose-500">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-          </button>
-        `;
-        container.appendChild(item);
-      });
-      lucide.createIcons();
-    }
-
-    function addFamilyMember() {
-      const input = document.getElementById('new-member-email');
-      const email = input.value.trim();
-      if (email && !settings.allowedUsers.includes(email)) {
-        settings.allowedUsers.push(email);
-        input.value = '';
-        renderFamilyMembersList();
-      }
-    }
-
-    function removeFamilyMember(email) {
-      settings.allowedUsers = settings.allowedUsers.filter(e => e !== email);
-      renderFamilyMembersList();
-    }
-
-    function saveSettings() {
-      settings.autoLogEnabled = document.getElementById('setting-autolog-toggle').checked;
-      settings.defaultPackets = parseInt(document.getElementById('setting-default-qty').value) || 2;
-      settings.pricePerPacket = parseInt(document.getElementById('setting-packet-price').value) || 30;
-      settings.vendorInfo = document.getElementById('setting-vendor-info').value.trim();
-
-      saveSettingsToStorage();
-      closeModal('settings-modal');
-      renderApp();
-    }
-
-    // --- ANDROID WIDGET SIMULATOR CONTROLS ---
-    function toggleWidgetModal() {
-      syncWidgetDisplay();
-      document.getElementById('widget-sim-modal').classList.remove('hidden');
-    }
-
-    function syncWidgetDisplay() {
-      const todayKey = getTodayDateKey();
-      const todayLog = dailyLogs[todayKey] || { packets: settings.defaultPackets };
-      const qty = todayLog.packets;
-      const cost = qty * settings.pricePerPacket;
-
-      document.getElementById('widget-qty-display').innerText = `${qty} Packet${qty === 1 ? '' : 's'}`;
-      document.getElementById('widget-cost-display').innerText = `Total: ₹${cost}`;
-    }
-
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.add('hidden');
-    }
-
-    // --- STORAGE PERSISTENCE ---
-    function saveSettingsToStorage() {
-      try {
-        localStorage.setItem('dairydash_settings', JSON.stringify(settings));
-        localStorage.setItem('dairydash_logs', JSON.stringify(dailyLogs));
-      } catch (e) {
-        console.warn('LocalStorage unavailable in current context.');
-      }
-    }
-
-    function loadStoredSettings() {
-      try {
-        const savedSettings = localStorage.getItem('dairydash_settings');
-        const savedLogs = localStorage.getItem('dairydash_logs');
-
-        if (savedSettings) settings = JSON.parse(savedSettings);
-        if (savedLogs) dailyLogs = JSON.parse(savedLogs);
-      } catch (e) {
-        console.warn('Fallback to memory state.');
-      }
-    }
-
-    function handleAuthAction() {
-      // Toggle demo user login state
-      currentUser.isLoggedIn = !currentUser.isLoggedIn;
-      document.getElementById('user-display-name').innerText = currentUser.isLoggedIn ? 'Ramesh (You)' : 'Sign In';
-    }
-  </script>
+            localStorage.setItem('atlas_settings', JSON.stringify(settings));
+            updateSettingsLabels();
+            closeSettings();
+            renderCalendar();
+        }
+    </script>
 </body>
 </html>
