@@ -159,7 +159,7 @@
                 <!-- Aavin Quick Actions -->
                 <div>
                     <span class="text-[11px] text-purple-300 font-medium mb-1.5 flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 fill-current text-emerald-400"><use href="#icon-aavin-pouch"/></svg>
+                        <i data-lucide="milk" class="w-3.5 h-3.5 text-emerald-400"></i>
                         Aavin Packets Quick Tap:
                     </span>
                     <div class="grid grid-cols-4 gap-1.5">
@@ -173,7 +173,7 @@
                 <!-- Cow Milk Quick Actions -->
                 <div>
                     <span class="text-[11px] text-purple-300 font-medium mb-1.5 flex items-center gap-1.5">
-                        <svg class="w-3.5 h-3.5 fill-current text-amber-500"><use href="#icon-cow-head"/></svg>
+                        <i data-lucide="droplets" class="w-3.5 h-3.5 text-amber-400"></i>
                         Cow Milk Quick Tap:
                     </span>
                     <div class="grid grid-cols-5 gap-1.5">
@@ -296,8 +296,8 @@
 
             <!-- Service 1: Aavin Packets -->
             <div class="space-y-3">
-                <h4 class="text-xs font-bold text-emerald-400 tracking-wide uppercase flex items-center gap-1">
-                    <svg class="w-4 h-4 fill-current"><use href="#icon-aavin-pouch"/></svg> 1. Aavin Packets (500ml)
+                <h4 class="text-xs font-bold text-emerald-400 tracking-wide uppercase flex items-center gap-1.5">
+                    <i data-lucide="milk" class="w-4 h-4"></i> 1. Aavin Packets (500ml)
                 </h4>
                 <div class="grid grid-cols-3 gap-2">
                     <div class="bg-slate-800/80 p-2.5 rounded-2xl text-center border border-slate-700">
@@ -329,8 +329,8 @@
 
             <!-- Service 2: Cow Milk -->
             <div class="space-y-2 border-t border-slate-800 pt-3">
-                <h4 class="text-xs font-bold text-amber-400 tracking-wide uppercase flex items-center gap-1">
-                    <svg class="w-4 h-4 fill-current"><use href="#icon-cow-head"/></svg> 2. Fresh Cow Milk (Litre)
+                <h4 class="text-xs font-bold text-amber-400 tracking-wide uppercase flex items-center gap-1.5">
+                    <i data-lucide="droplets" class="w-4 h-4"></i> 2. Fresh Cow Milk (Litre)
                 </h4>
                 <div class="flex items-center justify-between bg-slate-800/80 p-3 rounded-2xl border border-slate-700">
                     <span class="text-xs text-slate-300">Volume (₹<span id="priceCowLabel">60</span> / L)</span>
@@ -677,7 +677,6 @@
             document.getElementById('todayAavinCount').innerText = `${aavinCount} Pkt${aavinCount === 1 ? '' : 's'}`;
             document.getElementById('todayAavinCost').innerText = `(₹${aavinCost})`;
 
-            // Format cow display cleanly (e.g. "1 L" instead of "1.0 L" if whole number)
             const cowDisplayStr = log.cow % 1 === 0 ? `${log.cow} L` : `${log.cow.toFixed(1)} L`;
             document.getElementById('todayCowCount').innerText = cowDisplayStr;
             document.getElementById('todayCowCost').innerText = `(₹${cowCost})`;
@@ -820,11 +819,11 @@
                         ` : `
                             <div class="mt-1 space-y-0.5">
                                 <div class="flex items-center gap-1 text-[10px] text-emerald-700 font-extrabold">
-                                    <span class="w-3 h-3 text-emerald-600 inline-block"><svg class="w-full h-full"><use href="#icon-aavin-pouch"/></svg></span>
+                                    <i data-lucide="milk" class="w-3 h-3 text-emerald-600"></i>
                                     <span>${aavinCount}</span>
                                 </div>
                                 <div class="flex items-center gap-1 text-[10px] cow-brown-text font-extrabold">
-                                    <span class="w-3 h-3 cow-brown-text inline-block"><svg class="w-full h-full"><use href="#icon-cow-head"/></svg></span>
+                                    <i data-lucide="droplets" class="w-3 h-3 text-amber-700"></i>
                                     <span>${cowCellDisplay}</span>
                                 </div>
                             </div>
